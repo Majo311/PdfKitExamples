@@ -13,17 +13,13 @@ namespace pdfKitexamples
             {
                 Document pdfIn = new Document(fileIn);
                 Document pdfOut = new Document();
-                foreach (Page page in pdfIn.Pages)
-                {
-                    if (page.Index == 1)
-                    {
-                        ShapeCollection shapes = page.CreateShapes();
-                        Page newPage = new Page(page.Width, page.Height);
-                        newPage.Overlay.Add(shapes);
-                        pdfOut.Pages.Add(newPage);
-                        SavePdfDocument(pdfOut, null);
-                    }
-                }
+                Page page = pdfIn.Pages[1]; // second page, they Pages array is ordered, and indexed 0-based 
+                
+                ShapeCollection shapes = page.CreateShapes();
+                Page newPage = new Page(page.Width, page.Height);
+                newPage.Overlay.Add(shapes);
+                pdfOut.Pages.Add(newPage);
+                SavePdfDocument(pdfOut, null);
             }
             Console.ReadLine();
 
