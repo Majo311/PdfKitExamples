@@ -6,7 +6,7 @@ using TallComponents.PDF.Shapes;
 namespace pdfKitexamples
 {
     public class Program
-    {
+    {//wer
         static void Main(string[] args)
         {
             using (FileStream fileIn = new FileStream(Environment.CurrentDirectory + @"\sample1.pdf", FileMode.Open, FileAccess.Read))
