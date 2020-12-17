@@ -18,7 +18,6 @@ namespace pdfKitexamples
                     if (page.Index == 1)
                     {
                         ShapeCollection shapes = page.CreateShapes();
-                        downScaleText(shapes);
                         Page newPage = new Page(page.Width, page.Height);
                         newPage.Overlay.Add(shapes);
                         pdfOut.Pages.Add(newPage);
@@ -26,27 +25,10 @@ namespace pdfKitexamples
                     }
                 }
             }
+            Console.ReadLine();
 
         }
-        static void downScaleText(ShapeCollection shapes)
-        {
-            for (int i = 0; i < shapes.Count; i++)
-            {
-                Shape shape = shapes[i];
-
-                if (shape is ShapeCollection)
-                {
-                    // recurse
-                    downScaleText(shape as ShapeCollection);
-                }
-                else if (shape is TextShape)
-                {
-                    shapes.RemoveAt(i);
-                    TextShape downScaled = (shape as TextShape);
-                    shapes.Insert(i, downScaled);
-                }
-            }
-        }
+ 
         public static void SavePdfDocument(Document document, string Path)
         {
             Path = Path == null ? Environment.CurrentDirectory : Path;
@@ -54,6 +36,7 @@ namespace pdfKitexamples
             {
                 document.Write(fileOut);
             }
+            Console.WriteLine("New pdf file was created!!!");
         }
     }
 }
