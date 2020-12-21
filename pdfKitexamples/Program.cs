@@ -2,37 +2,27 @@
 using System.IO;
 using TallComponents.PDF;
 using TallComponents.PDF.Shapes;
+using System.Linq;
 
 namespace pdfKitexamples
 {
     public class Program
-    {//wer
+    {
         static void Main(string[] args)
         {
-            using (FileStream fileIn = new FileStream(Environment.CurrentDirectory + @"\sample1.pdf", FileMode.Open, FileAccess.Read))
+            ShapeCollection shapes = null;
+            using (PdfFile pdfFileIn = PdfFile.Read(Environment.CurrentDirectory + @"\sample1.pdf"))
             {
-                Document pdfIn = new Document(fileIn);
-                Document pdfOut = new Document();
-                Page page = pdfIn.Pages[1]; // second page, they Pages array is ordered, and indexed 0-based 
-                
-                ShapeCollection shapes = page.CreateShapes();
-                Page newPage = new Page(page.Width, page.Height);
-                newPage.Overlay.Add(shapes);
-                pdfOut.Pages.Add(newPage);
-                SavePdfDocument(pdfOut, null);
-            }
+                Page secondPage = pdfFileIn.Document.Pages[1];
+                shapes = secondPage.CreateShapes();
+                using (PdfFile pdfOut = new PdfFile())
+                {
+                    pdfOut.AddPage(shapes, secondPage.Width, secondPage.Height);
+                    pdfOut.Save(null);
+                }
+            }       
             Console.ReadLine();
 
-        }
- 
-        public static void SavePdfDocument(Document document, string Path)
-        {
-            Path = Path == null ? Environment.CurrentDirectory : Path;
-            using (FileStream fileOut = new FileStream(Path + @"\out.pdf", FileMode.Create, FileAccess.Write))
-            {
-                document.Write(fileOut);
-            }
-            Console.WriteLine("New pdf file was created!!!");
         }
     }
 }
