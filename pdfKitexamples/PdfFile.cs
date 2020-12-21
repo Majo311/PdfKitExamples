@@ -63,14 +63,14 @@ namespace pdfKitexamples
         public void EditPage(int pageIndex)
         {
             ShapeCollection oldshapeCollection=this.Document.Pages[pageIndex].CreateShapes();
-            downScaleShapes(oldshapeCollection);
+            EditShapes(oldshapeCollection);
         }
 
         public void InsertPage(int Index)
         {
 
         }
-        void downScaleShapes(ShapeCollection shapes, int dpi=10)
+        void EditShapes(ShapeCollection shapes, int dpi=10)
         {
             for (int i = 0; i < shapes.Count; i++)
             {
@@ -79,7 +79,7 @@ namespace pdfKitexamples
                 if (shape is ShapeCollection)
                 {
                     // recurse
-                    downScaleShapes(shape as ShapeCollection, dpi);
+                    EditShapes(shape as ShapeCollection, dpi);
                 }
                 else
                 {
@@ -89,21 +89,10 @@ namespace pdfKitexamples
                         {
                             shapes.RemoveAt(i);
                             pdfKitexamples.ShapeEditors.IShapeEditor IShapeEditor = (IShapeEditor)Activator.CreateInstance(type);
-                           Shape editedShape= IShapeEditor.GetEditedShape(shape);
+                            Shape editedShape= IShapeEditor.GetEditedShape(shape);
+                            shapes.Insert(i,editedShape);
                         }
                     }
-                    //else if (shape is ImageShape)
-                    //{
-                    //    shapes.RemoveAt(i);
-                    //    ImageShape downScaled = downScale(shape as ImageShape, dpi);
-                    //    shapes.Insert(i, downScaled);
-                    //}
-                    //else if(shape is TextShape)
-                    //{
-                    //    shapes.RemoveAt(i);
-                    //    shapes.Insert(i, EditShape(shape));
-
-                    //}
                 }
             }
         }
