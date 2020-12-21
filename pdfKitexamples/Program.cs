@@ -15,12 +15,13 @@ namespace pdfKitexamples
             {
                 Page secondPage = pdfFileIn.Document.Pages[1];
                 shapes = secondPage.CreateShapes();
+                pdfFileIn.EditPage(1);
                 using (PdfFile pdfOut = new PdfFile())
                 {
                     pdfOut.AddPage(shapes, secondPage.Width, secondPage.Height);
                     pdfOut.Save(null);
                 }
-            }       
+            }
             Console.ReadLine();
 
         }
