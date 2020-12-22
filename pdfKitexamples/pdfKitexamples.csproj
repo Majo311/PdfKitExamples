@@ -52,6 +52,7 @@
     <Compile Include="PdfFile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShapeEditors\CodeTextShape\TextEffect.cs" />
     <Compile Include="ShapeEditors\IShapeEditor.cs" />
     <Compile Include="ShapeEditors\TextShapeEditor.cs" />
   </ItemGroup>

@@ -8,14 +8,14 @@ namespace pdfKitexamples
 {
     public class Program
     {
-        static void Main(string[] args)
+         static void Main(string[] args)
         {
             ShapeCollection shapes = null;
             using (PdfFile pdfFileIn = PdfFile.Read(Environment.CurrentDirectory + @"\sample1.pdf"))
             {
                 Page secondPage = pdfFileIn.Document.Pages[1];
                 shapes = secondPage.CreateShapes();
-                pdfFileIn.EditPage(1);
+                shapes= pdfFileIn.EditPage(1);
                 using (PdfFile pdfOut = new PdfFile())
                 {
                     pdfOut.AddPage(shapes, secondPage.Width, secondPage.Height);

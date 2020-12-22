@@ -60,17 +60,17 @@ namespace pdfKitexamples
             newPage.Overlay.Add(shapes);
             this.Document.Pages.Add(newPage);
         }
-        public void EditPage(int pageIndex)
+        public ShapeCollection EditPage(int pageIndex)
         {
             ShapeCollection oldshapeCollection=this.Document.Pages[pageIndex].CreateShapes();
-            EditShapes(oldshapeCollection);
+            return EditShapes(oldshapeCollection);
         }
 
         public void InsertPage(int Index)
         {
 
         }
-        void EditShapes(ShapeCollection shapes, int dpi=10)
+        ShapeCollection EditShapes(ShapeCollection shapes, int dpi=10)
         {
             for (int i = 0; i < shapes.Count; i++)
             {
@@ -95,11 +95,8 @@ namespace pdfKitexamples
                     }
                 }
             }
-        }
-        public Shape EditShape(Shape shape)
-        {
-            Shape editedShape = null;
-            return editedShape;
+
+            return shapes;
         }
         private ImageShape downScale(ImageShape image, int dpi=10)
         {
