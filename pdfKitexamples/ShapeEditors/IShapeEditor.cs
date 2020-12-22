@@ -6,6 +6,6 @@ namespace pdfKitexamples.ShapeEditors
     interface IShapeEditor
     {
         string Type { get;}
-        Shape GetEditedShape(Shape shape);
+        Shape GetEditedShape(Shape shape,dynamic objectValue=null);
     }
 }

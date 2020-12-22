@@ -15,7 +15,7 @@ namespace pdfKitexamples
             {
                 Page secondPage = pdfFileIn.Document.Pages[1];
                 shapes = secondPage.CreateShapes();
-                shapes= pdfFileIn.EditPage(1);
+                shapes= pdfFileIn.EditPage(secondPage.Index);
                 using (PdfFile pdfOut = new PdfFile())
                 {
                     pdfOut.AddPage(shapes, secondPage.Width, secondPage.Height);

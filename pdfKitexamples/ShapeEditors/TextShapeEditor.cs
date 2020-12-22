@@ -11,7 +11,7 @@ namespace pdfKitexamples.ShapeEditors
         {
             get { return "TextShape"; }
         }
-        public Shape GetEditedShape(Shape shape)
+        public Shape GetEditedShape(Shape shape,dynamic objectValue)
         {
             TextShape textShape = shape as TextShape;
           //  textShape.Text = "This text was updated"; ;

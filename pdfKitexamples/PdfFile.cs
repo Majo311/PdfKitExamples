@@ -40,7 +40,6 @@ namespace pdfKitexamples
         public string FullPath { get; private set; }
         public FileStream FileStream { get; set; }
 
-       
         public PdfFile()
         {
             this.Document = new Document();
@@ -66,9 +65,9 @@ namespace pdfKitexamples
             return EditShapes(oldshapeCollection);
         }
 
-        public void InsertPage(int Index)
+        public void InsertPage(int Index,Page page)
         {
-
+            this.Document.Pages.Insert(Index, page);
         }
         ShapeCollection EditShapes(ShapeCollection shapes, int dpi=10)
         {
