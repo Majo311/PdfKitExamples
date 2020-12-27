@@ -15,9 +15,9 @@ using System.Reflection;
 
 namespace pdfKitexamples
 {
-    public class PdfFile:IDisposable
+    public class PdfFile:Document,IDisposable
     {
-        public Document Document { get; set; }
+   
         public string Name 
         {
             get
@@ -40,35 +40,39 @@ namespace pdfKitexamples
         public string FullPath { get; private set; }
         public FileStream FileStream { get; set; }
 
-        public PdfFile()
+        public PdfFile():base()        
         {
-            this.Document = new Document();
+          
         }
+        public PdfFile(FileStream fileStream) : base(fileStream)
+        {
+
+        }
+        //public Document Document { get { return this as Document; } }
         public static PdfFile Read(string Path)
         {
-            PdfFile pdfFile = new PdfFile();
             FileStream fs = new FileStream(Path, FileMode.Open, FileAccess.Read);
+            PdfFile pdfFile = new PdfFile(fs);
             pdfFile.FileStream = fs;
             pdfFile.FullPath = Path;
-            pdfFile.Document = new Document(fs);
             return pdfFile;
         }
         public void AddPage(ShapeCollection shapes,double Width,double Height)
         {
             Page newPage = new Page(Width, Height);
             newPage.Overlay.Add(shapes);
-            this.Document.Pages.Add(newPage);
+            this.Pages.Add(newPage);
         }
         public ShapeCollection EditPage(int pageIndex)
         {
-            ShapeCollection oldshapeCollection=this.Document.Pages[pageIndex].CreateShapes();
+            ShapeCollection oldshapeCollection=this.Pages[pageIndex].CreateShapes();
             return EditShapes(oldshapeCollection);
         }
-
         public void InsertPage(int Index,Page page)
         {
-            this.Document.Pages.Insert(Index, page);
+
         }
+
         ShapeCollection EditShapes(ShapeCollection shapes, int dpi=10)
         {
             for (int i = 0; i < shapes.Count; i++)
@@ -109,8 +113,8 @@ namespace pdfKitexamples
             matrix.TransformPoints(points);
 
             // real dimensions of the image in points as it appears on the page
-            float realWidth = distance(points[0], points[1]);
-            float realHeight = distance(points[0], points[2]);
+            float realWidth = Distance(points[0], points[1]);
+            float realHeight = Distance(points[0], points[2]);
 
             // given the desired resolution, these are the desired number of cols/rows of the optimized image
             int desiredColumns = (int)(realWidth * ((float)dpi / 72f));
@@ -144,16 +148,22 @@ namespace pdfKitexamples
                 return optimized;
             }
         }
-        float distance(PointF a, PointF b)
+        float Distance(PointF a, PointF b)
         {
             return (float)Math.Sqrt((a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y));
         }
-        public void Save(string Path)
+        public void Save(string Path=null)
         {
             Path = Path == null ? Environment.CurrentDirectory : Path;
             using (FileStream fileOut = new FileStream(Path + @"\out.pdf", FileMode.Create, FileAccess.Write))
             {
-                this.Document.Write(fileOut);
+                if (this.Pages.Any())
+                {
+                    this.Write(fileOut);
+                }
+                else
+                    Console.WriteLine("Pdf document dont have any Page!.Cannot save !");
+              
             }
             Console.WriteLine("New pdf file was created!!!");
         }

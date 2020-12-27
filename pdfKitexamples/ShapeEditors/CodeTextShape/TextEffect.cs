@@ -183,7 +183,7 @@ public class GlowText : DecoratedTextBase
         this.Size = 48;
     }
 
-    public Shape AddDecoratedTextShapes(string text)
+    public new Shape AddDecoratedTextShapes(string text)
     {
         const double OverSizeStep = 1.4;
         double offsetY = this.Font.BaselineOffset * this.Size;
