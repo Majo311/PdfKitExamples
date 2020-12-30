@@ -61,6 +61,7 @@
     <Compile Include="ShapeEditors\MultilineTextShapeEditor.cs" />
     <Compile Include="ShapeEditors\PageShapeEditor.cs" />
     <Compile Include="ShapeEditors\TextShapeEditor.cs" />
+    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -70,5 +71,10 @@
     </None>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <None Include="Scripts\Calculator.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

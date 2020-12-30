@@ -7,6 +7,7 @@ using TallComponents.PDF.Forms.Fields;
 using TallComponents.PDF.Annotations.Widgets;
 using TallComponents.PDF.Colors;
 using TallComponents.PDF.Fonts;
+using TallComponents.PDF.Security;
 
 namespace pdfKitexamples
 {
@@ -14,9 +15,10 @@ namespace pdfKitexamples
     {
          static void Main(string[] args)
         {
-  
-                //EitPages();
-                UseJavaScript();
+
+            //EitPages();
+            UseJavaScript();
+            //UseSecurity();
             Console.ReadLine();
 
         }
@@ -39,112 +41,10 @@ namespace pdfKitexamples
 
         private static void UseJavaScript()
         {
-            string scriptClear = @"//Reference to the 2 TextFields
-            var result=this.getField('result');
-            var operator=this.getField('operator');
-            var accum;      //The accumulator to store intermidiate results
-            var entry;      //The active entry, so we do not have to parse the result.Value.
-            var multiplier; //The active multiplier (can be 1 or 10)
-            var divisor;    //The active divisor (can be 1, 10, 100, ... ), needed for DOT support.
-            clear_all();
-            // Function to clear all (C)
-            function clear_all()
-            {
-                clear_entry()
-                result.value = 0;
-                accum = 0;
-                operator.value = '';
-             }
-        // Function to clear current entry only (CE)
-        function clear_entry()
-        {
-            entry = 0;
-            multiplier = 1;
-            divisor = 1;
-        }";
-            string scriptOperatorPressed = @"// Operator pressed
-function operator_pressed(op)
-{
-  if (operator.value != '')
-  {
-    update_result();
-  } 
-  else 
-  {
-    if (entry !=0) 
-    {
-      accum = entry;
-    }
-  }
-  operator.value = op;
-  clear_entry();
-} ";
-            string scriptNumberPressed = @"// Number pressed
-            function number_pressed(number)
-            {
-                entry = entry * multiplier + number / divisor;
-                if (divisor >= 10)
-                {
-                    divisor = divisor * 10;
-                }
-                else
-                {
-                    multiplier = 10;
-                }
-                result.value = entry;
-            }";
-            string scriptUpdateResult = @"// Function to update result
-function update_result()
-{
-  switch (operator.value) {
-    case 'PLUS':
-      accum = accum + entry;
-     break;
-    case 'MINUS':
-      accum = accum - entry;
-     break;
-    case 'MULTIPLY':
-      accum = accum * entry;
-     break;
-    case 'DIVIDE':
-     if (entry != 0) 
-     {
-       accum = accum / entry;
-     } 
-     break;
-  }
-  operator.value = '';
-  clear_entry();
-}
-
-function dot_pressed()
-{
-  if (divisor == 1) 
-  {
-    divisor = 10;
-    multiplier = 1;
-  }
-}
-
-function plusMin_pressed()
-{
-   entry = entry * -1;
-   result.value = entry;
-}
-
-function equal_pressed()
-{
-  update_result();
-  result.value = accum;
-}
-";
+            string calculatorScript = File.ReadAllText(Directory.GetCurrentDirectory()+@"\Scripts\Calculator.js");
             using (PdfFile pdfOut = new PdfFile())
             {
-                pdfOut.CreateJavaScript("scriptClear", scriptClear);
-                pdfOut.CreateJavaScript("scriptOperatorPressed", scriptOperatorPressed);
-                pdfOut.CreateJavaScript("scriptNumberPressed", scriptNumberPressed);
-                pdfOut.CreateJavaScript("scriptUpdateResult", scriptUpdateResult);
-
+                pdfOut.CreateJavaScript("calculatorScript", calculatorScript);
                 //custom page size.
                 Page page = new Page(280, 210);
                 pdfOut.Pages.Add(page);
@@ -191,7 +91,7 @@ function equal_pressed()
                 }
 
                 //Place clear total (C) and clear element (CE) button
-               Helper.placeCButton(pdfOut, page, 100, page.Height - 80);
+                Helper.placeCButton(pdfOut, page, 100, page.Height - 80);
                 Helper.placeCeButton(pdfOut, page, 140, page.Height - 80);
 
                 //Place number buttons
@@ -207,7 +107,7 @@ function equal_pressed()
                 Helper.placeNumberButton(pdfOut, page, 2, 140, page.Height - 140);
                 Helper.placeNumberButton(pdfOut, page, 3, 180, page.Height - 140);
 
-                //Helper.(pdfOut, page, 0, 100, page.Height - 160);
+                Helper.placeNumberButton(pdfOut, page, 0, 100, page.Height - 160);
 
                 //Place other buttons
                 Helper.placeDotButton(pdfOut, page, 140, page.Height - 160);
@@ -225,7 +125,9 @@ function equal_pressed()
         }
         private static void UseSecurity()
         {
-
+            using (PdfFile pdfOut = new PdfFile())
+            {
+            }
         }
     }
 }

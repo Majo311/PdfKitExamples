@@ -39,14 +39,15 @@ namespace pdfKitexamples
         }
         public string FullPath { get; private set; }
         public FileStream FileStream { get; set; }
+        public SecurityManager SecurityManager { get; private set; }
 
         public PdfFile():base()        
         {
-          
+            this.SecurityManager = new SecurityManager(this);
         }
         public PdfFile(FileStream fileStream) : base(fileStream)
         {
-
+            this.SecurityManager = new SecurityManager(this);
         }
         //public Document Document { get { return this as Document; } }
         public static PdfFile Read(string Path)
