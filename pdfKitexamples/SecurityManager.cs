@@ -16,26 +16,34 @@ namespace pdfKitexamples
             this.pdfFile = PdfFile;
             this.IsEncripted = PdfFile.Security == null ? false : true;
         }
+        public void SetEcription(EncryptionLevel EncryptionLevel)
+        {
+            this.EncryptionLevel = EncryptionLevel;
+        }
         public void AddPassword(User User)
         {
             if (!IsEncripted)
             {
-                PasswordSecurity passwordSecurity = this.pdfFile.Security as PasswordSecurity;
+                PasswordSecurity passwordSecurity = new PasswordSecurity();
                 passwordSecurity.Change = User.Role.CanEdit;
                 passwordSecurity.CopyExtract = User.Role.CanCopyOrExtract;
                 passwordSecurity.Print = User.Role.CanPrint;
+                passwordSecurity.EncryptionLevel = this.EncryptionLevel;
                 if (User.IsCreator||User.IsOwner)
                 {
                     passwordSecurity.UserPassword = User.Password;
-                    User.IsCreator = true;
+                    this.pdfFile.Security = passwordSecurity;
                 }
             }
         } 
-        public void AddOwnerPassword(User User)
+        public void AddOwnerPassword(User User,User Owner)
         {
             if(User.IsCreator)
             {
-                
+                PasswordSecurity passwordSecurity = new PasswordSecurity();
+                passwordSecurity.EncryptionLevel = this.EncryptionLevel;
+                passwordSecurity.OwnerPassword = Owner.Password;//
+                this.pdfFile.Security = passwordSecurity;
             }
         }
         public void RemovePassword(User User)

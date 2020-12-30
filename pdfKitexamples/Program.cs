@@ -17,8 +17,8 @@ namespace pdfKitexamples
         {
 
             //EitPages();
-            UseJavaScript();
-            //UseSecurity();
+            //UseJavaScript();
+            UseSecurity();
             Console.ReadLine();
 
         }
@@ -127,6 +127,11 @@ namespace pdfKitexamples
         {
             using (PdfFile pdfOut = new PdfFile())
             {
+                Page page = new Page(280, 210);
+                pdfOut.Pages.Add(page);
+                User userX = new User("xzzzzzz");
+                pdfOut.SecurityManager.AddPassword(userX);
+                pdfOut.Save();
             }
         }
     }

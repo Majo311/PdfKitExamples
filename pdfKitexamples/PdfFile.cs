@@ -1,16 +1,12 @@
 ﻿using pdfKitexamples.ShapeEditors;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TallComponents.PDF;
 using TallComponents.PDF.Shapes;
-using pdfKitexamples.ShapeEditors;
 using System.Reflection;
 
 namespace pdfKitexamples
@@ -49,7 +45,7 @@ namespace pdfKitexamples
         {
             this.SecurityManager = new SecurityManager(this);
         }
-        //public Document Document { get { return this as Document; } }
+
         public static PdfFile Read(string Path)
         {
             FileStream fs = new FileStream(Path, FileMode.Open, FileAccess.Read);
@@ -178,4 +174,4 @@ namespace pdfKitexamples
             }
         }
     }
-    }
+}
